@@ -1,0 +1,14 @@
+[build]
+builder = "dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[variables]
+JWT_SECRET = "nEUzgqgNR7VqPiZecqKKNhfdrm72l8xH6AQp+hnMU6eon2y9UugBlL3+1qPWmoGK6v/O2lLoUZBqO0TfNWKb4Q=="
+STORAGE_PROVIDER = "local"
+IS_GENERAL = "true"
+DISABLE_REGISTRATION = "true"

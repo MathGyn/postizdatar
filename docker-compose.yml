@@ -24,6 +24,10 @@ services:
       
       # Since we're running locally without HTTPS initially
       NOT_SECURED: "true"
+      
+      # TikTok API Configuration (opcional - só configure se for usar TikTok)
+      # TIKTOK_CLIENT_ID: "seu_client_id_16_caracteres"
+      # TIKTOK_CLIENT_SECRET: "seu_client_secret_32_caracteres"
     volumes:
       - postiz-config:/config/
       - postiz-uploads:/uploads/
