@@ -1,0 +1,12 @@
+FROM ghcr.io/gitroomhq/postiz-app:latest
+
+# Render usa PORT automaticamente
+ENV PORT=5000
+ENV NODE_ENV=production
+
+# Criar diretório de uploads
+RUN mkdir -p /uploads && chmod 777 /uploads
+
+EXPOSE 5000
+
+# O Postiz já tem o comando correto configurado

@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: postiz
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: MAIN_URL
+        sync: false
+      - key: FRONTEND_URL  
+        sync: false
+      - key: NEXT_PUBLIC_BACKEND_URL
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postiz-postgres
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: IS_GENERAL
+        value: "true"
+      - key: DISABLE_REGISTRATION
+        value: "false"
+      - key: STORAGE_PROVIDER
+        value: "local"
+      - key: UPLOAD_DIRECTORY
+        value: "/uploads"
+      - key: NEXT_PUBLIC_UPLOAD_DIRECTORY
+        value: "/uploads"
+      - key: BACKEND_INTERNAL_URL
+        value: "http://localhost:3000"
+      - key: PORT
+        value: "5000"
+
+databases:
+  - name: postiz-postgres
+    databaseName: postiz
+    user: postiz
+    plan: free

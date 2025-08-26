@@ -1,10 +1,14 @@
 FROM ghcr.io/gitroomhq/postiz-app:latest
 
-# Usar variáveis de ambiente do Railway
-ENV RAILWAY_STATIC_URL=${RAILWAY_STATIC_URL}
-ENV DATABASE_URL=${DATABASE_URL}
-ENV REDIS_URL=${REDIS_URL}
+# Set working directory
+WORKDIR /app
 
+# Expose port 5000 (Postiz default)
 EXPOSE 5000
 
-CMD ["node", "dist/backend/main.js"]
+# Railway will provide these environment variables
+ENV PORT=5000
+ENV NODE_ENV=production
+
+# Use the default entrypoint from the Postiz image
+# The Postiz image already has the correct startup command
