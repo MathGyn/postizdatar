@@ -3,12 +3,12 @@ FROM ghcr.io/gitroomhq/postiz-app:latest
 # Set working directory
 WORKDIR /app
 
-# Expose port 5000 (Postiz default)
-EXPOSE 5000
-
-# Railway will provide these environment variables
-ENV PORT=5000
+# Railway uses dynamic PORT environment variable
 ENV NODE_ENV=production
 
-# Use the default entrypoint from the Postiz image
-# The Postiz image already has the correct startup command
+# Copy startup script
+COPY start-railway.sh /start-railway.sh
+RUN chmod +x /start-railway.sh
+
+# Use our custom startup script
+CMD ["/start-railway.sh"]

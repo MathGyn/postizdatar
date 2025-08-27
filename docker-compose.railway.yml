@@ -24,9 +24,9 @@ services:
       
       # Segurança habilitada para produção
       
-      # TikTok API
-      TIKTOK_CLIENT_ID: "Organization ID"
-      TIKTOK_CLIENT_SECRET: "7542693647393981445"
+      # TikTok API (configure no Railway Dashboard)
+      # TIKTOK_CLIENT_ID: "seu_client_id"
+      # TIKTOK_CLIENT_SECRET: "seu_client_secret"
     volumes:
       - uploads:/uploads
     ports:
