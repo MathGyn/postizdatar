@@ -2,15 +2,14 @@
 builder = "dockerfile"
 
 [deploy]
-healthcheckPath = "/api/health"
-healthcheckTimeout = 300
+healthcheckPath = "/"
+healthcheckTimeout = 600
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 
 [variables]
 JWT_SECRET = "znuRXfckJe/T7OCVEGQgoB2xo+iGRzYAtc4D7u7JN07jBccQRNs3M8ADoUehangouXJqv/famV5R2sGlIUP0Lw=="
-STORAGE_PROVIDER = "local"
 IS_GENERAL = "true"
-BACKEND_INTERNAL_URL = "http://localhost:$PORT"
+STORAGE_PROVIDER = "local"
 UPLOAD_DIRECTORY = "/uploads"
 NEXT_PUBLIC_UPLOAD_DIRECTORY = "/uploads"
