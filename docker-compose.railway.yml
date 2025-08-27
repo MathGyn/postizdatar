@@ -7,7 +7,7 @@ services:
       MAIN_URL: ${RAILWAY_STATIC_URL}
       FRONTEND_URL: ${RAILWAY_STATIC_URL}
       NEXT_PUBLIC_BACKEND_URL: ${RAILWAY_STATIC_URL}/api
-      JWT_SECRET: "nEUzgqgNR7VqPiZecqKKNhfdrm72l8xH6AQp+hnMU6eon2y9UugBlL3+1qPWmoGK6v/O2lLoUZBqO0TfNWKb4Q=="
+      JWT_SECRET: "znuRXfckJe/T7OCVEGQgoB2xo+iGRzYAtc4D7u7JN07jBccQRNs3M8ADoUehangouXJqv/famV5R2sGlIUP0Lw=="
       
       # Railway fornece estas automaticamente
       DATABASE_URL: ${DATABASE_URL}

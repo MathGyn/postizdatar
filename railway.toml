@@ -1,15 +1,14 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
 
 [deploy]
-healthcheckPath = "/api/health"
-healthcheckTimeout = 600
+healthcheckPath = "/"
+healthcheckTimeout = 300
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 5
-startCommand = "docker-compose -f docker-compose.railway.yml up"
+restartPolicyMaxRetries = 10
 
 [variables]
-JWT_SECRET = "nEUzgqgNR7VqPiZecqKKNhfdrm72l8xH6AQp+hnMU6eon2y9UugBlL3+1qPWmoGK6v/O2lLoUZBqO0TfNWKb4Q=="
+JWT_SECRET = "znuRXfckJe/T7OCVEGQgoB2xo+iGRzYAtc4D7u7JN07jBccQRNs3M8ADoUehangouXJqv/famV5R2sGlIUP0Lw=="
 STORAGE_PROVIDER = "local"
 IS_GENERAL = "true"
 DISABLE_REGISTRATION = "true"

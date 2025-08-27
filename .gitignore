@@ -144,3 +144,9 @@ postgres-data/
 redis-data/
 uploads/
 config/
+
+# Produção - não commitar
+.env.production
+docker-compose.prod.yml.backup
+*.backup
+backup.sql
