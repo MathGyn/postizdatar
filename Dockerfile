@@ -1,12 +1,10 @@
 FROM ghcr.io/gitroomhq/postiz-app:latest
 
-# Railway sets these automatically:
-# - DATABASE_URL (PostgreSQL)
-# - REDIS_URL (Redis) 
-# - RAILWAY_STATIC_URL (domain)
-# - PORT (dynamic port)
+# Copy railway script
+COPY start-railway.sh /usr/local/bin/start-railway.sh
+RUN chmod +x /usr/local/bin/start-railway.sh
 
-# Required environment variables
+# Required environment variables (basic)
 ENV NODE_ENV=production
 ENV IS_GENERAL=true
 ENV DISABLE_REGISTRATION=false
@@ -19,3 +17,6 @@ RUN mkdir -p /uploads
 
 # Expose port (Railway will map dynamically)
 EXPOSE 5000
+
+# Use railway script as entrypoint
+CMD ["/usr/local/bin/start-railway.sh"]
