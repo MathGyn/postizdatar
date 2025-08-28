@@ -1,12 +1,26 @@
 FROM ghcr.io/gitroomhq/postiz-app:latest
 
-# Render usa PORT automaticamente
-ENV PORT=5000
+# Copy render script
+COPY start-render.sh /usr/local/bin/start-render.sh
+RUN chmod +x /usr/local/bin/start-render.sh
+
+# Pre-build durante Docker build (otimização)
+WORKDIR /app
+RUN pnpm run build || echo "Build failed but continuing..."
+
+# Required environment variables
 ENV NODE_ENV=production
+ENV IS_GENERAL=true
+ENV DISABLE_REGISTRATION=false
+ENV STORAGE_PROVIDER=local
+ENV UPLOAD_DIRECTORY=/uploads
+ENV NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
 
-# Criar diretório de uploads
-RUN mkdir -p /uploads && chmod 777 /uploads
+# Create uploads directory
+RUN mkdir -p /uploads
 
+# Expose port
 EXPOSE 5000
 
-# O Postiz já tem o comando correto configurado
+# Use render script as entrypoint
+ENTRYPOINT ["/usr/local/bin/start-render.sh"]
