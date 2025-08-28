@@ -44,7 +44,10 @@ ls -la /app/ || ls -la /
 echo "📦 Verificando package.json:"
 cat /app/package.json | grep -A 10 "scripts" || echo "package.json não encontrado"
 
-# Executar o comando padrão do container original
-# Vamos usar o que geralmente funciona em containers Node.js
-cd /app 2>/dev/null || cd /
-exec npm run start:prod
+# Executar o comando correto do Postiz (usa pnpm e PM2)
+cd /app
+echo "🔨 Fazendo build se necessário..."
+pnpm run build 2>/dev/null || echo "Build já feito ou não necessário"
+
+echo "⚡ Iniciando com PM2..."
+exec pnpm run pm2-run
