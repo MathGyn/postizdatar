@@ -24,6 +24,20 @@ export STORAGE_PROVIDER="local"
 export UPLOAD_DIRECTORY="/uploads"
 export NEXT_PUBLIC_UPLOAD_DIRECTORY="/uploads"
 
+# Configurações específicas Redis para Railway
+if [ -n "$REDIS_URL" ]; then
+    echo "🔧 Configurando Redis para Railway..."
+    export REDIS_HOST=$(echo $REDIS_URL | sed 's/redis:\/\/\([^:]*\).*/\1/')
+    export REDIS_PORT=$(echo $REDIS_URL | sed 's/.*:\([0-9]*\).*/\1/')
+    export REDIS_PASSWORD=""
+    export REDIS_TLS="false"
+    
+    # Configurações adicionais para compatibilidade
+    export NODE_ENV="production"
+    export REDIS_FAMILY="4"
+    export REDIS_KEEPALIVE="true"
+fi
+
 # Criar diretório de uploads
 mkdir -p /uploads
 
@@ -46,6 +60,32 @@ cat /app/package.json | grep -A 10 "scripts" || echo "package.json não encontra
 
 # Executar o comando correto do Postiz (build já foi feito no Dockerfile)
 cd /app
+
+echo "📝 Criando arquivo .env para resolver incompatibilidades..."
+cat > .env << EOF
+# Railway Environment
+MAIN_URL=$MAIN_URL
+FRONTEND_URL=$FRONTEND_URL
+NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+BACKEND_INTERNAL_URL=$BACKEND_INTERNAL_URL
+DATABASE_URL=$DATABASE_URL
+REDIS_URL=$REDIS_URL
+
+# Core Settings
+IS_GENERAL=true
+DISABLE_REGISTRATION=false
+STORAGE_PROVIDER=local
+UPLOAD_DIRECTORY=/uploads
+NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
+JWT_SECRET=$JWT_SECRET
+NODE_ENV=production
+
+# Redis Compatibility fixes
+REDIS_FAMILY=4
+REDIS_KEEPALIVE=true
+REDIS_CONNECT_TIMEOUT=30000
+REDIS_LAZY_CONNECT=true
+EOF
 
 echo "⚡ Iniciando diretamente com PM2..."
 # Pular o pm2 delete pois pode dar problema, ir direto ao essencial
