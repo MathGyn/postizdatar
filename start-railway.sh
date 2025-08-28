@@ -53,4 +53,26 @@ echo "Rodando prisma-db-push..."
 pnpm run prisma-db-push || echo "Prisma push falhou, continuando..."
 
 echo "Iniciando serviços PM2..."
-exec pnpm run --parallel pm2
+# Iniciar serviços em background
+pnpm run --parallel pm2 &
+
+echo "⏳ Aguardando todos os serviços estarem online..."
+# Aguardar até todos os serviços principais estarem rodando
+for i in {1..60}; do
+    if pm2 status | grep -q "frontend.*online" && \
+       pm2 status | grep -q "backend.*online" && \
+       pm2 status | grep -q "workers.*online" && \
+       pm2 status | grep -q "cron.*online"; then
+        echo "✅ Todos os serviços estão online!"
+        break
+    fi
+    echo "Aguardando serviços... ($i/60)"
+    sleep 5
+done
+
+echo "📊 Status final dos serviços:"
+pm2 status
+
+echo "🚀 Postiz iniciado com sucesso! Mantendo container ativo..."
+# Manter o processo principal vivo
+wait
