@@ -89,13 +89,34 @@ CACHE_PROVIDER=memory
 SESSION_PROVIDER=memory
 EOF
 
-echo "🔧 Aplicando patch para desabilitar Redis..."
-# Patch do código compilado para remover referências ao Redis
-find /app -name "*.js" -path "*/dist/*" -exec grep -l "IORedisConnection" {} \; | while read file; do
-    echo "Patching: $file"
-    sed -i 's/new IORedisConnection/\/\* new IORedisConnection/g' "$file" 2>/dev/null || true
-    sed -i 's/client\.setMaxListeners/\/\* client.setMaxListeners/g' "$file" 2>/dev/null || true
-done
+echo "🔧 Aplicando patch agressivo para desabilitar Redis..."
+# Encontrar e substituir arquivos problemáticos
+echo "Encontrando arquivos com IORedisConnection..."
+find /app -name "*.js" -path "*/dist/*" -exec grep -l "IORedisConnection" {} \; > /tmp/redis_files.txt
+
+echo "Aplicando patch nos arquivos encontrados:"
+while read file; do
+    if [ -f "$file" ]; then
+        echo "Patching: $file"
+        # Fazer backup
+        cp "$file" "$file.bak"
+        # Criar versão sem Redis
+        cat > "$file" << 'PATCH_EOF'
+// Arquivo patchado para desabilitar Redis - Railway compatibility
+module.exports = {
+    // Stub para evitar erros de IORedisConnection
+    concurrency: () => Promise.resolve(),
+    queue: {
+        add: () => Promise.resolve(),
+        process: () => Promise.resolve()
+    }
+};
+PATCH_EOF
+        echo "Arquivo $file patchado com stub"
+    fi
+done < /tmp/redis_files.txt
+
+echo "Patch aplicado em $(wc -l < /tmp/redis_files.txt) arquivos"
 
 echo "⚡ Iniciando diretamente com PM2..."
 # Pular o pm2 delete pois pode dar problema, ir direto ao essencial
