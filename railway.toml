@@ -3,9 +3,9 @@ builder = "dockerfile"
 
 [deploy]
 healthcheckPath = "/api/health"
-healthcheckTimeout = 300
+healthcheckTimeout = 600
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 10
+restartPolicyMaxRetries = 3
 
 [variables]
 JWT_SECRET = "znuRXfckJe/T7OCVEGQgoB2xo+iGRzYAtc4D7u7JN07jBccQRNs3M8ADoUehangouXJqv/famV5R2sGlIUP0Lw=="

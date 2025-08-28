@@ -107,8 +107,9 @@ echo "Iniciando serviços PM2..."
 pnpm run --parallel pm2 &
 
 echo "⏳ Aguardando todos os serviços estarem online..."
-# Aguardar até todos os serviços principais estarem rodando
-for i in {1..60}; do
+echo "Postiz é um container pesado (4.4GB) - pode demorar vários minutos..."
+# Aguardar até todos os serviços principais estarem rodando (mais tempo)
+for i in {1..120}; do
     if pm2 status | grep -q "frontend.*online" && \
        pm2 status | grep -q "backend.*online" && \
        pm2 status | grep -q "workers.*online" && \
@@ -116,7 +117,7 @@ for i in {1..60}; do
         echo "✅ Todos os serviços estão online!"
         break
     fi
-    echo "Aguardando serviços... ($i/60)"
+    echo "Aguardando serviços... ($i/120)"
     sleep 5
 done
 
