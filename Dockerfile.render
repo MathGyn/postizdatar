@@ -16,8 +16,8 @@ ENV STORAGE_PROVIDER=local
 ENV UPLOAD_DIRECTORY=/uploads
 ENV NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
 
-# Create uploads directory
-RUN mkdir -p /uploads
+# Create uploads directory (apenas uma vez)
+RUN mkdir -p /uploads && chmod 755 /uploads
 
 # Expose port
 EXPOSE 5000
