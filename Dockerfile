@@ -18,5 +18,5 @@ RUN mkdir -p /uploads
 # Expose port (Railway will map dynamically)
 EXPOSE 5000
 
-# Use railway script as entrypoint
-CMD ["/usr/local/bin/start-railway.sh"]
+# Use railway script as entrypoint (will call original CMD)
+ENTRYPOINT ["/usr/local/bin/start-railway.sh"]

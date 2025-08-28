@@ -38,6 +38,13 @@ echo "⏳ Aguardando banco de dados..."
 sleep 5
 
 echo "🚀 Iniciando Postiz..."
+echo "📂 Listando arquivos para debug:"
+ls -la /app/ || ls -la /
 
-# Iniciar aplicação na porta correta
-exec docker-entrypoint.sh npm start
+echo "📦 Verificando package.json:"
+cat /app/package.json | grep -A 10 "scripts" || echo "package.json não encontrado"
+
+# Executar o comando padrão do container original
+# Vamos usar o que geralmente funciona em containers Node.js
+cd /app 2>/dev/null || cd /
+exec npm run start:prod
