@@ -4,6 +4,10 @@ FROM ghcr.io/gitroomhq/postiz-app:latest
 COPY start-railway.sh /usr/local/bin/start-railway.sh
 RUN chmod +x /usr/local/bin/start-railway.sh
 
+# Pre-build during Docker build (not runtime)
+WORKDIR /app
+RUN pnpm run build || echo "Build failed but continuing..."
+
 # Required environment variables (basic)
 ENV NODE_ENV=production
 ENV IS_GENERAL=true

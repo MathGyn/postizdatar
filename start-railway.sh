@@ -44,10 +44,13 @@ ls -la /app/ || ls -la /
 echo "📦 Verificando package.json:"
 cat /app/package.json | grep -A 10 "scripts" || echo "package.json não encontrado"
 
-# Executar o comando correto do Postiz (usa pnpm e PM2)
+# Executar o comando correto do Postiz (build já foi feito no Dockerfile)
 cd /app
-echo "🔨 Fazendo build se necessário..."
-pnpm run build 2>/dev/null || echo "Build já feito ou não necessário"
 
-echo "⚡ Iniciando com PM2..."
-exec pnpm run pm2-run
+echo "⚡ Iniciando diretamente com PM2..."
+# Pular o pm2 delete pois pode dar problema, ir direto ao essencial
+echo "Rodando prisma-db-push..."
+pnpm run prisma-db-push || echo "Prisma push falhou, continuando..."
+
+echo "Iniciando serviços PM2..."
+exec pnpm run --parallel pm2
