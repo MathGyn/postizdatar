@@ -74,5 +74,6 @@ echo "📊 Status final dos serviços:"
 pm2 status
 
 echo "🚀 Postiz iniciado com sucesso! Mantendo container ativo..."
-# Manter o processo principal vivo
-wait
+echo "🔍 Monitorando logs PM2..."
+# Manter container ativo seguindo os logs PM2
+exec pm2 logs
