@@ -89,6 +89,14 @@ CACHE_PROVIDER=memory
 SESSION_PROVIDER=memory
 EOF
 
+echo "🔧 Aplicando patch para desabilitar Redis..."
+# Patch do código compilado para remover referências ao Redis
+find /app -name "*.js" -path "*/dist/*" -exec grep -l "IORedisConnection" {} \; | while read file; do
+    echo "Patching: $file"
+    sed -i 's/new IORedisConnection/\/\* new IORedisConnection/g' "$file" 2>/dev/null || true
+    sed -i 's/client\.setMaxListeners/\/\* client.setMaxListeners/g' "$file" 2>/dev/null || true
+done
+
 echo "⚡ Iniciando diretamente com PM2..."
 # Pular o pm2 delete pois pode dar problema, ir direto ao essencial
 echo "Rodando prisma-db-push..."
